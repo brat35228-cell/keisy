@@ -121,6 +121,8 @@ export class Player {
     this.#state.ck = { pow: 1, auto: 0, at: Date.now() };
     this.#state.rbh = [];
     this.#state.mn = null;
+    // Після відкриття Кейсів 2 (є bbGift) бобр-коіни теж скидаються до стартових 100.
+    if (this.#state.bbGift) this.#state.bbal = 100;
   }
 
   replaceAll(next) {
