@@ -130,6 +130,7 @@ export class Player {
 
   applyAdminSnapshot(data) {
     this.#state.bal = Number(data.balance) || 0;
+    if (data.bbal !== undefined) this.#state.bbal = Number(data.bbal) || 0;
     try { this.#state.inv = JSON.parse(data.inv || "[]"); } catch { /* лишаємо інвентар */ }
     this.#state.adminRev = data.adminRev || 0;
   }

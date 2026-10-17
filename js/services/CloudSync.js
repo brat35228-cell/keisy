@@ -113,6 +113,7 @@ export class CloudSync {
         const base = {
           name: state.name,
           balance: state.bal,
+          bbal: state.bbal || 0,
           inv: JSON.stringify(state.inv),
           invCount: state.inv.length,
           invValue: player.inventoryValue(),

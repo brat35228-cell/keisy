@@ -212,6 +212,9 @@ export class AdminConsole {
       <div class="bigbal">${Money.format(player.balance || 0)} монет</div>
       <div class="row two"><input id="bv" type="number" min="0" placeholder="Сума"><button class="btn" onclick="app.admin.setBalance('set')">Встановити</button></div>
       <div class="acts" style="justify-content:flex-start;margin:0 0 6px"><button class="btn sm ghost" onclick="app.admin.setBalance('add')">+ Додати</button><button class="btn sm ghost" onclick="app.admin.setBalance('sub')">− Забрати</button></div>
+      <div class="bigbal" style="margin-top:12px">${Money.format(player.bbal || 0)} бобр-коінів</div>
+      <div class="row two"><input id="bbv" type="number" min="0" placeholder="Сума бобр-коінів"><button class="btn" onclick="app.admin.setBeavers('set')">Встановити</button></div>
+      <div class="acts" style="justify-content:flex-start;margin:0 0 6px"><button class="btn sm ghost" onclick="app.admin.setBeavers('add')">+ Видати</button><button class="btn sm ghost" onclick="app.admin.setBeavers('sub')">− Забрати</button></div>
       ${this.#giveHtml()}
       <h3 style="margin-top:14px">Інвентар (${inventory.length})</h3>
       <div style="display:grid;gap:8px">${inventory.slice(0, 100).map((item) => `<div class="it" style="--c:${this.#app.rarity.color(item.r || 0)}"><span class="em">${this.#app.images.itemHtml(item)}</span><div class="tx"><b>${Html.escape(item.n)}</b><span>${Money.format(item.v)} монет</span></div><button class="btn danger sm" onclick="app.admin.removeItem('${Html.escape(item.uid)}')">Забрати</button></div>`).join("") || '<div class="empty">Порожньо</div>'}</div>
@@ -331,6 +334,18 @@ export class AdminConsole {
     this.#transaction(this.selected, (data) => {
       const balance = Number(data.balance) || 0;
       return { balance: mode === "set" ? value : mode === "add" ? balance + value : Math.max(0, balance - value) };
+    });
+  }
+
+  setBeavers(mode) {
+    const raw = document.querySelector("#bbv").value;
+    if (raw === "") return this.#app.toast("Введи суму бобр-коінів");
+    const value = Math.round(Number(raw));
+    if (!(value >= 0)) return this.#app.toast("Сума має бути від 0");
+    document.querySelector("#bbv").value = "";
+    this.#transaction(this.selected, (data) => {
+      const current = Number(data.bbal) || 0;
+      return { bbal: mode === "set" ? value : mode === "add" ? current + value : Math.max(0, current - value) };
     });
   }
 
