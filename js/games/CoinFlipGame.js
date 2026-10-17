@@ -1,7 +1,7 @@
 import { Money } from "../core/Money.js";
 import { MiniGame } from "./MiniGame.js";
 
-/** Орел чи решка. Шанс 50/50, виграш ×1.9. */
+/** Орел чи решка. Шанс 50/50, виграш ×3. */
 export class CoinFlipGame extends MiniGame {
   #turns = 0;
 
@@ -12,7 +12,7 @@ export class CoinFlipGame extends MiniGame {
 
   render() {
     document.querySelector("#main").innerHTML = this.back("games", "← До міні-ігор") + `<div class="panel" style="text-align:center"><h2>Монетка</h2>
-      <p class="note">Обери бік. Якщо вгадаєш — ставка повертається з множником ×1,9.</p>
+      <p class="note">Обери бік. Якщо вгадаєш — ставка повертається з множником ×3.</p>
       ${this.app.bets.html()}
       <div class="coinwrap"><div class="coin" id="coin"><div>🦅</div><div class="bk">🪙</div></div></div>
       <div class="gres" id="coinres"></div>
@@ -42,7 +42,7 @@ export class CoinFlipGame extends MiniGame {
     }
     setTimeout(() => {
       const win = landed === side;
-      const payout = win ? Math.floor(bet * 1.9) : 0;
+      const payout = win ? Math.floor(bet * 3) : 0;
       if (payout) app.player.credit(payout);
       app.saveState();
       app.shell.updateBalances();

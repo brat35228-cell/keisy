@@ -11,7 +11,7 @@ import { MiniGame } from "./MiniGame.js";
 class RebirthLink extends MiniGame {
   get id() { return "reb"; }
   get emoji() { return "♻️"; }
-  get title() { return "Ребірт"; }
+  get title() { return "Ребіртх"; }
   get blurb() { return "Скинь прогрес — речі з кейсів стануть дорожчими"; }
   render() { this.app.go("me"); }
 }
