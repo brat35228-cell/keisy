@@ -77,7 +77,7 @@ export class GameApp {
   go(view, id) {
     if (this.session.spinning) return;
     if (Session.BEAVER_VIEWS.includes(view) && !this.player.beaverUnlocked(this.admin.isAdmin)) {
-      this.toast("Вкладка Бобри відкривається після 20 ребіртів");
+      this.toast("Вкладка Кейси 2 відкривається після 20 ребіртів");
       view = "shop";
     }
     this.session.view = view;

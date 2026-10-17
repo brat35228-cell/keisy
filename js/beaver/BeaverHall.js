@@ -2,34 +2,44 @@ import { Html } from "../core/Html.js";
 import { Ids } from "../core/Ids.js";
 import { Money } from "../core/Money.js";
 import { RarityTable } from "../models/RarityTable.js";
-import { HolesGame } from "./HolesGame.js";
+import { CraftGame } from "./CraftGame.js";
+import { ItemStake } from "./ItemStake.js";
 import { PlinkoGame } from "./PlinkoGame.js";
+import { PrizePool } from "./PrizePool.js";
 import { TimesFiveGame } from "./TimesFiveGame.js";
 
-/** Вкладка бобрів: свої кейси, інвентар і три міні-ігри. */
+/** Вкладка «Кейси 2»: майнкрафт-кейси, інвентар і три міні-ігри, де ставкою є речі. */
 export class BeaverHall {
   #games;
 
   constructor(app) {
     this.app = app;
+    this.stake = new ItemStake(app);
+    this.prizes = new PrizePool(app);
     this.plinko = new PlinkoGame(app);
     this.timesFive = new TimesFiveGame(app);
-    this.holes = new HolesGame(app);
+    this.craft = new CraftGame(app);
     this.#games = [
-      ["plinko", "📍", "Плінко", "Кулька падає в кошик з множником", this.plinko],
-      ["x5", "📦", "Кейс ×5", "10% шанс ×5, інакше нічого", this.timesFive],
-      ["holes", "🕳️", "Нірки бобра", "П'ять нірок, скарб лише в одній", this.holes],
+      ["plinko", "📍", "Плінко", "Кулька падає в слот: річ ×0,4 … ×12", this.plinko],
+      ["x5", "📦", "Кейс ×5", "10% шанс ×5 речей, інакше нічого", this.timesFive],
+      ["craft", "🧰", "Верстак", "3–9 речей у сітці → одна нова", this.craft],
     ];
   }
 
   tabs() {
     const view = this.app.session.view;
     const on = (key, extra) => `class="btn sm ${view === key || extra ? "" : "ghost"}"`;
-    return `<div class="qty" style="margin-bottom:14px"><button ${on("beaver", view === "bcase")} onclick="app.go('beaver')">Кейси бобрів</button><button ${on("bgames", view === "bgame")} onclick="app.go('bgames')">Міні-ігри</button><button ${on("binv", false)} onclick="app.go('binv')">Інвентар (${this.app.player.beaverInventory.length})</button></div>`;
+    return `<div class="qty" style="margin-bottom:14px"><button ${on("beaver", view === "bcase")} onclick="app.go('beaver')">Кейси</button><button ${on("bgames", view === "bgame")} onclick="app.go('bgames')">Міні-ігри</button><button ${on("binv", false)} onclick="app.go('binv')">Інвентар (${this.app.player.beaverInventory.length})</button></div>`;
+  }
+
+  /** Оновлює лічильник на кнопці «Інвентар» без перемальовування екрана. */
+  updateInvLabel() {
+    const button = document.querySelector("#main button[onclick=\"app.go('binv')\"]");
+    if (button) button.textContent = "Інвентар (" + this.app.player.beaverInventory.length + ")";
   }
 
   renderShop() {
-    document.querySelector("#main").innerHTML = this.tabs() + `<div class="bonus"><span>Окрема валюта вкладки Бобри. Ціна кожного наступного кейсу ×5.</span></div>
+    document.querySelector("#main").innerHTML = this.tabs() + `<div class="bonus"><span>Окрема валюта вкладки Кейси 2 — бобр-коіни. Ціна кожного наступного кейсу ×5.</span></div>
       <div class="grid">${this.app.beaverCatalog.cases.map((lootCase) => `<button class="box" style="cursor:pointer;color:inherit" onclick="app.go('bcase','${lootCase.id}')">
         <div class="sticker">${Html.escape(lootCase.e)}</div><div class="nm">${Html.escape(lootCase.n)}</div>
         <div class="pr">${Money.format(lootCase.p)} бобрів</div></button>`).join("")}</div>`;
@@ -51,7 +61,7 @@ export class BeaverHall {
     const count = this.app.session.beaverOpenCount;
     const reels = Array.from({ length: count }, (_, reel) => `<div class="vp"><div class="track">${[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((index) => this.#tile(list[(index + reel * 3) % list.length], lootCase)).join("")}</div></div>`).join("");
     document.querySelector("#main").innerHTML = this.tabs() + `
-      <button class="back" onclick="app.go('beaver')">← До кейсів бобрів</button>
+      <button class="back" onclick="app.go('beaver')">← До кейсів</button>
       <div class="head"><div class="sticker">${Html.escape(lootCase.e)}</div>
         <div style="flex:1;min-width:160px"><h2 style="margin:0">${Html.escape(lootCase.n)}</h2><div class="note">20 речей · епік 3,5% кожна · легендарна 0,5%</div></div>
         <button class="btn" id="openBtn" onclick="app.beavers.open()">Відкрити ${count > 1 ? "×" + count + " " : ""}за ${Money.format(lootCase.p * count)}</button></div>
@@ -134,7 +144,7 @@ export class BeaverHall {
     if (got.length === 1) {
       const item = got[0];
       result.style.setProperty("--c", app.beaverRarity.color(item.r));
-      result.innerHTML = `<div class="big">${Html.escape(item.e)}</div><h2 style="margin:6px 0 2px">${Html.escape(item.n)}</h2><div class="rn">${RarityTable.NAMES[item.r]}</div><div class="note">Вартість ${Money.format(item.v)} бобр-коінів. Річ уже в інвентарі бобрів.</div>
+      result.innerHTML = `<div class="big">${Html.escape(item.e)}</div><h2 style="margin:6px 0 2px">${Html.escape(item.n)}</h2><div class="rn">${RarityTable.NAMES[item.r]}</div><div class="note">Вартість ${Money.format(item.v)} бобр-коінів. Річ уже в інвентарі Кейсів 2.</div>
         <div class="acts"><button class="btn" onclick="app.beavers.sell('${item.uid}',true)">Продати за ${Money.format(item.v)}</button><button class="btn ghost" onclick="app.beavers.open()">Відкрити ще раз</button></div>`;
     } else {
       const total = got.reduce((sum, item) => sum + item.v, 0);
@@ -216,7 +226,7 @@ export class BeaverHall {
   renderInventory() {
     const items = this.app.player.beaverInventory;
     if (!items.length) {
-      document.querySelector("#main").innerHTML = this.tabs() + `<div class="empty">Інвентар бобрів порожній.</div>`;
+      document.querySelector("#main").innerHTML = this.tabs() + `<div class="empty">Інвентар Кейсів 2 порожній.</div>`;
       return;
     }
     const total = items.reduce((sum, item) => sum + item.v, 0);

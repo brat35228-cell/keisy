@@ -53,7 +53,7 @@ export class ProfileScreen {
         <div class="bigbal">×${factor} до цін речей</div>
         <p class="note">Зроблено ребіртів: <b>${rebirths}</b>${rebirths ? ` · речі з кейсів дорожчі на ${percent}%` : ""}. Скидаються монети, інвентар і міні-ігри. Ціни кейсів не змінюються — продавати речі стає вигідніше.</p>
         <p class="note">Для наступного ребірта потрібно <b>${Money.format(need)}</b> монет (рахунок + інвентар). Зараз: ${Money.format(have)}.</p>
-        <p class="note">${rebirths >= 20 || app.admin.isAdmin ? "Вкладка Бобри відкрита: окремі кейси, міні-ігри й бобр-коіни." : "Після 20 ребіртів відкриється вкладка Бобри з окремою валютою."}</p>
+        <p class="note">${rebirths >= 20 || app.admin.isAdmin ? "Вкладка Кейси 2 відкрита: майнкрафт-кейси, міні-ігри й бобр-коіни." : "Після 20 ребіртів відкриється вкладка Кейси 2 з окремою валютою."}</p>
         <div class="acts" style="justify-content:flex-start"><button class="btn ${ready ? "" : "ghost"}" ${ready ? "" : "disabled"} onclick="app.profile.rebirth()">${ready ? "Зробити ребірт" : "Ще рано"}</button></div></div>`;
   }
 
@@ -68,7 +68,7 @@ export class ProfileScreen {
     let message = "Ребірт " + app.player.rebirths + "! Речі дорожчі на " + Math.round(app.player.rebirths * 5) + "%";
     if (app.player.rebirths === 20) {
       app.player.ensureBeaverGift(app.admin.isAdmin);
-      message = "Ребірт 20! Відкрито вкладку Бобри й бобр-коіни";
+      message = "Ребірт 20! Відкрито вкладку Кейси 2 й бобр-коіни";
     }
     app.saveState();
     app.toast(message);

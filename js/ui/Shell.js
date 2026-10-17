@@ -84,7 +84,7 @@ export class Shell {
     const app = this.#app;
     const view = app.session.view;
     const tabs = [["shop", "Кейси"], ["games", "Міні-ігри"]];
-    if (app.player.beaverUnlocked(app.admin.isAdmin)) tabs.push(["beaver", "Бобри"]);
+    if (app.player.beaverUnlocked(app.admin.isAdmin)) tabs.push(["beaver", "Кейси 2"]);
     tabs.push(
       ["inv", "Інвентар (" + app.player.inventory.length + ")"],
       ["me", "Профіль"],

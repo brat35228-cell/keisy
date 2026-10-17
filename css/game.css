@@ -138,20 +138,6 @@ nav button.on{background:var(--tape);color:var(--tapeInk);font-weight:700}
 .it[role=button]{cursor:pointer}
 .tgt{text-align:center}
 .tgt .big{font-size:56px;line-height:1.1}
-.pk{position:relative;max-width:420px;margin:12px auto;padding:12px 8px 8px;background:var(--panel2);border-radius:16px;overflow:hidden;min-height:240px}
-.pkrow{display:flex;justify-content:center;gap:22px;height:22px;align-items:center}
-.pkrow:nth-child(even){transform:translateX(12px)}
-.peg{width:9px;height:9px;border-radius:50%;background:#8a6a2a;box-shadow:0 1px 0 #5a4010}
-.pkslots{display:flex;gap:3px;max-width:420px;margin:8px auto 0}
-.pkslots span{flex:1;min-width:0;text-align:center;font-size:11px;font-weight:700;background:var(--panel2);padding:7px 1px;border-radius:8px}
-.pkslots span.on{background:var(--tape);color:var(--tapeInk)}
-.pball{position:absolute;left:50%;top:8px;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--tape);box-shadow:0 0 0 2px #c88a00;z-index:2;transition:left .16s linear,top .16s linear}
-.holes{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-width:420px;margin:14px auto}
-.hole{aspect-ratio:1;border-radius:16px;border:1px solid var(--line);background:var(--panel2);font-size:32px}
-.hole.win{background:rgba(55,201,163,.25);border-color:var(--good)}
-.hole.miss{opacity:.45}
-.x5box{width:min(280px,80vw);margin:18px auto;padding:28px 16px;border-radius:20px;background:var(--panel2);border:2px solid var(--line);text-align:center}
-.x5box .big{font-size:52px;line-height:1.1}
 
 /* ---------- Оновлений вигляд інтерфейсу ---------- */
 :root{--tape:#ffd24a;--good:#42dfb3;--line:rgba(148,163,184,.2)}
@@ -280,11 +266,10 @@ nav button.on,nav button.on:hover{background:var(--tape);color:var(--tapeInk);bo
 .res{border-color:var(--c,var(--edge))}
 input,select{border:2px solid var(--edge);background:var(--panel2);border-radius:11px}
 input:focus-visible,select:focus-visible{outline-offset:1px}
-.plr,.qty button,.mc,.hole{border:2px solid var(--edge)}
+.plr,.qty button,.mc{border:2px solid var(--edge)}
 .qty button{box-shadow:0 3px 0 var(--edge)}
 .qty button.on{border-color:var(--edge)}
 .plr.on{background:color-mix(in srgb,var(--tape) 22%,var(--panel2))}
-.pkslots span{border:2px solid var(--edge)}
 .toast{border:2px solid var(--edge);background:var(--tape);color:var(--tapeInk);box-shadow:0 4px 0 var(--edge)}
 
 /* кейси — коробки зі смужкою скотчу й цінником */
@@ -332,3 +317,22 @@ input:focus-visible,select:focus-visible{outline-offset:1px}
 :root[data-theme="dark"]{--gold:#ffcf3d}
 .bal b,.ck-bal,.bigbal,.fl{color:var(--gold)}
 .box.locked .pr{border-radius:12px;background:var(--panel2);color:var(--mute);line-height:1.3;font-size:12px}
+
+
+/* Кейси 2: ставки речами */
+.pkwrap{margin:12px auto;max-width:460px}
+.pkwrap canvas{display:block;margin:0 auto;max-width:100%;border-radius:16px;border:2px solid var(--edge);box-shadow:var(--sh)}
+.craft{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin:14px 0}
+.cgrid{display:grid;grid-template-columns:repeat(3,68px);gap:6px;padding:10px;background:var(--panel2);border:2px solid var(--edge);border-radius:14px;box-shadow:var(--sh)}
+.cgrid.shake{animation:cshake .25s linear infinite}
+.ccell{width:68px;height:68px;border-radius:8px;background:rgba(0,0,0,.22);border:2px dashed var(--line);display:grid;place-items:center;position:relative;color:var(--mute)}
+.ccell i{font-style:normal;font-size:20px;opacity:.5}
+.ccell.full{border:2px solid var(--c,var(--line));background:var(--panel);cursor:pointer;color:var(--ink)}
+.ccell.full span{font-size:30px;line-height:1}
+.ccell.full small{position:absolute;bottom:1px;left:0;right:0;font-size:10px;color:var(--mute)}
+.carrow{font-size:34px;color:var(--gold)}
+.cres{width:92px;height:92px;border-radius:14px;display:grid;place-items:center;font-size:44px;background:var(--panel2);border:2px solid var(--edge);box-shadow:var(--sh)}
+.cres.spin{animation:cshake .25s linear infinite}
+.cres.done{border-color:var(--c);box-shadow:0 0 0 3px var(--c),0 0 24px var(--c);animation:pop .35s ease-out}
+@keyframes cshake{0%{transform:translate(0,0)}25%{transform:translate(2px,-2px)}50%{transform:translate(-2px,1px)}75%{transform:translate(1px,2px)}100%{transform:translate(0,0)}}
+#stakebox .upsel{max-height:220px}

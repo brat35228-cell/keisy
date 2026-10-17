@@ -83,7 +83,7 @@ export class Player {
     return !!isAdmin || this.rebirths >= 20;
   }
 
-  /** Перший вхід у бобрів дарує стартові бобр-коіни. Повертає true, якщо дарунок видано. */
+  /** Перший вхід у Кейси 2 дарує стартові бобр-коіни. Повертає true, якщо дарунок видано. */
   ensureBeaverGift(isAdmin) {
     if (!this.beaverUnlocked(isAdmin)) return false;
     if (this.#state.bbGift) return false;
